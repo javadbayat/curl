@@ -57,9 +57,13 @@
             #tblDownloadResult {
                 border-collapse: collapse;
             }
+
+            #resultData {
+                padding: 4px;
+            }
         </style>
     </head>
-    <body>
+    <body bgcolor="#a2ecf9">
         <p id="operationStatus" align="center">
             <img src="https://javadbayat.github.io/curl/assets/images/spinner.gif" width="70px" height="70px" align="middle">
             <span>Downloading...</span>
@@ -69,7 +73,7 @@
                 <th height="30px" align="center" valign="middle" bgcolor="DarkSalmon">File Contents</th>
             </tr>
             <tr>
-                <td id="resultData"></td>
+                <td id="resultData" bgcolor="white"></td>
             </tr>
         </table>
     </body>
