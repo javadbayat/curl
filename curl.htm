@@ -47,6 +47,7 @@
             }
 
             function downloadCallback(fileContent) {
+                operationStatus.style.display = "none";
                 tblDownloadResult.style.display = "";
                 resultData.innerText = fileContent;
             }
@@ -59,7 +60,11 @@
         </style>
     </head>
     <body>
-        <table id="tblDownloadResult" border="2" style="display: none;">
+        <p id="operationStatus" align="center">
+            <img src="https://javadbayat.github.io/curl/assets/images/spinner.gif" width="70px" height="70px" align="middle">
+            <span>Downloading...</span>
+        </p>
+        <table id="tblDownloadResult" border="2px" style="display: none;">
             <tr>
                 <th height="30px" align="center" valign="middle" bgcolor="DarkSalmon">File Contents</th>
             </tr>
