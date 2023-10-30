@@ -5,7 +5,7 @@ To use this tool, open Command Prompt and execute the following command:
 
     mshta https://javadbayat.github.io/curl <url> -o <DestPath>
 
-where `<url>` is the absolute URL of the file that you want to download, and `<DestPath>` is the path where the final downloaded file is to be stored on your computer. For example:
+where `<url>` is the direct URL of the file that you want to download, and `<DestPath>` is the path where the final downloaded file is to be stored on your computer. For example:
 
     mshta https://javadbayat.github.io/curl http://example.com/video.mp4 -o D:\MyVideo.mp4
 
