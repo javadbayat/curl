@@ -146,15 +146,24 @@
                 margin: 5px;
                 zoom: 130%;
             }
+
+            .statusIndication {
+                font-size: x-large;
+            }
+
+            .statusIndication span {
+                position: relative;
+                top: 0.5ex;
+            }
         </style>
     </head>
     <body bgcolor="#a2ecf9">
-        <div id="divInProgress" style="font-size: large;">
+        <div id="divInProgress" class="statusIndication">
             <img src="https://javadbayat.github.io/curl/assets/images/spinner.gif" width="70px" height="70px" align="middle">
             <span>Downloading...</span>
         </div>
         <div id="divFinished" style="display: none;">
-            <div style="text-align: left; color: purple; font-size: large;">
+            <div style="text-align: left; color: purple;" class="statusIndication">
                 <img src="https://javadbayat.github.io/curl/assets/images/info.gif" width="70px" height="70px" align="middle">
                 <span>Download completed!</span>
             </div>
