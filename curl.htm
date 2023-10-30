@@ -39,6 +39,12 @@
                     window.close();
                 };
 
+                document.onkeypress = function() {
+                    // Allow the user to exit the app by pressing Esc key
+                    if (event.keyCode == 27)
+                        window.close();
+                }
+
                 var args = parseCommandLine(app.commandLine);
                 if (args.length < 4) {
                     alert("Not enough arguments");
