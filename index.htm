@@ -1,14 +1,27 @@
 <html>
   <head>
     <title>curl (initializing...)</title>
-    <hta:application applicationname="curl" version="1.0" navigable="yes" windowstate="maximize" scroll="auto" showintaskbar="no" />
+    <hta:application applicationname="curl" version="1.0" navigable="yes" caption="no" scroll="no" showintaskbar="no" contextmenu="no" selection="no" />
     
     <meta name="author" content="Javad Bayat">
     <meta http-equiv="content-type" content="text/html; charset = UTF-8">
     <meta http-equiv="MSThemeCompatible" content="Yes">
     <meta http-equiv="refresh" content="0; url = https://envoy.lol/https://javadbayat.github.io/curl/curl.htm">
+
+    <script language="jscript">
+      function shrinkWindow() {
+        var x = Math.floor(screen.availWidth / 2 - 180);
+        var y = Math.floor(screen.availHeight / 2 - 70);
+        
+        try {
+          resizeTo(360, 140);
+          moveTo(x, y);
+        }
+        catch (err) {}
+      }
+    </script>
   </head>
-  <body bgcolor="#ffffcc">
-    <center style="font-size: large;">Initializing...</center>
+  <body bgcolor="#ffffcc" onactivate="shrinkWindow()">
+    <center style="font-size: x-large;">Initializing...</center>
   </body>
 </html>
