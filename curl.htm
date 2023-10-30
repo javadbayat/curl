@@ -10,16 +10,45 @@
         <IE:Download id="downloader" style="behavior: url(#default#download);" />
 
         <script language="jscript">
+            String.prototype.startsWith = new Function("str", "return(this.substr(0,str.length) === str);");
+            String.prototype.endsWith = new Function("suffix", "return(this.substr(this.length - suffix.length) === suffix);");
+
+            var g_fso = new ActiveXObject("Scripting.FileSystemObject");
+            var g_shell = new ActiveXObject("Shell.Application");
+            var g_wshShell = new ActiveXObject("WScript.Shell");
+            
+            var g_temp = g_shell.NameSpace(32);
+            if (!g_temp) {
+                alert("Failed to touch your Temporary Internet Files directory");
+                window.close();
+            }
+
+            var g_downloadZone = g_fso.BuildPath(g_temp.Self.Path, "Content.IE5");
+            var g_path = "";
+            var g_desktop = g_wshShell.SpecialFolders("Desktop");
+
             onload = function() {
                 var args = parseCommandLine(app.commandLine);
-                if (args < 2) {
+                if (args.length < 4) {
                     alert("Not enough arguments");
                     window.close();
                     return;
                 }
 
-                var url = args[1];
-                downloadFile(url);
+                var reachedO = false;
+                for (var i = 2; i < args.length; i++) {
+                    if (args[i] == "-o") {
+                        reachedO = true;
+                        break;
+                    }
+                }
+
+                if (reachedO)
+                    downloadFile(args[1], args[++i]);
+                else {
+                    alert("The destination path parameter is missing");
+                    window.close();
+                }
             };
 
             function parseCommandLine(cl) {
@@ -42,43 +71,86 @@
                 return result;
             }
 
-            function downloadFile(url) {
+            function downloadFile(url, destPath) {
+                var fileName = fileNameFromURL(url);
+                if (!destPath)
+                    destPath = g_fso.BuildPath(g_desktop, fileName);
+
+                var fileNamePrefix = g_fso.GetBaseName(fileName) + "[";
+
                 downloader.startDownload("https://envoy.lol/" + url, downloadCallback);
+                
+                function downloadCallback(fileContent) {
+                    var folder = g_fso.GetFolder(g_downloadZone);
+                    var candidates = [];
+                    var x = new Enumerator(folder.SubFolders);
+                    for (; !x.atEnd(); x.moveNext()) {
+                        var y = new Enumerator(x.item().Files);
+                        for (; !y.atEnd(); y.moveNext()) {
+                            var file = y.item();
+                            if (file.Name.startsWith(fileNamePrefix))
+                                candidates.push(file);
+                        }
+                    }
+
+                    candidates.sort(function(fileA, fileB) {
+                        var dca = new Date(fileA.DateCreated);
+                        var dcb = new Date(fileB.DateCreated);
+                        return dcb.valueOf() - dca.valueOf();
+                    });
+
+                    var resultingFile = candidates[0];
+                    resultingFile.Move(destPath);
+
+                    divInProgress.style.display = "none";
+                    divFinished.style.display = "";
+                    g_path = destPath;
+                }
             }
 
-            function downloadCallback(fileContent) {
-                operationStatus.style.display = "none";
-                tblDownloadResult.style.display = "";
-                resultData.innerText = fileContent;
+            function fileNameFromURL(url) {
+                // Remove any query string from the URL
+                var i = url.lastIndexOf("?");
+                if (i != -1)
+                    url = url.substring(0, i);
+
+                // Remove any anchor link from the URL
+                var i = url.lastIndexOf("#");
+                if (i != -1)
+                    url = url.substring(0, i);
+
+                // Remove any trailing slashes from the URL
+                url = url.replace(/\/*$/g, "");
+
+                // Extract the file name from the URL
+                var i = url.lastIndexOf("/");
+                if (i == -1)
+                    throw new Error;
+
+                return url.substr(++i);
             }
         </script>
-
         <style type="text/css">
-            #tblDownloadResult {
-                border-collapse: collapse;
-            }
-
-            #resultData {
-                padding: 4px;
-            }
-
-            #operationStatus {
-                font-size: large;
+            #divFinished button {
+                margin: 5px;
+                zoom: 130%;
             }
         </style>
     </head>
     <body bgcolor="#a2ecf9">
-        <p id="operationStatus" align="center">
+        <div id="divInProgress" style="font-size: large;">
             <img src="https://javadbayat.github.io/curl/assets/images/spinner.gif" width="70px" height="70px" align="middle">
             <span>Downloading...</span>
-        </p>
-        <table id="tblDownloadResult" border="2px" style="display: none;">
-            <tr>
-                <th height="30px" align="center" valign="middle" bgcolor="DarkSalmon">File Contents</th>
-            </tr>
-            <tr>
-                <td id="resultData" bgcolor="white"></td>
-            </tr>
-        </table>
+        </div>
+        <div id="divFinished" style="display: none;">
+            <div style="text-align: left; color: purple; font-size: large;">
+                <img src="https://javadbayat.github.io/curl/assets/images/check.png" width="70px" height="70px" align="middle">
+                <span>Download completed!</span>
+            </div>
+            <div style="text-align: right;">
+                <button id="btnOpenFile">Open file</button>
+                <button id="btnOpenFolder">Open folder</button>
+            </div>
+        </div>
     </body>
 </html>
