@@ -1,7 +1,7 @@
 <html xmlns:IE>
     <head>
         <title>curl</title>
-        <hta:application id="app" applicationname="curl" version="1.0" navigable="no" windowstate="maximize" scroll="auto" showintaskbar="no" />
+        <hta:application id="app" applicationname="curl" version="1.0" navigable="no" caption="no" scroll="auto" showintaskbar="no" />
 
         <meta name="author" content="Javad Bayat">
         <meta http-equiv="content-type" content="text/html; charset = UTF-8">
@@ -28,6 +28,17 @@
             var g_desktop = g_wshShell.SpecialFolders("Desktop");
 
             onload = function() {
+                btnOpenFile.onclick = function() {
+                    g_wshShell.Run('"' + g_path + '"');
+                    window.close();
+                };
+
+                btnOpenFolder.onclick = function() {
+                    var folderPath = g_fso.GetParentFolderName(g_path);
+                    g_shell.Open(folderPath);
+                    window.close();
+                };
+
                 var args = parseCommandLine(app.commandLine);
                 if (args.length < 4) {
                     alert("Not enough arguments");
@@ -144,7 +155,7 @@
         </div>
         <div id="divFinished" style="display: none;">
             <div style="text-align: left; color: purple; font-size: large;">
-                <img src="https://javadbayat.github.io/curl/assets/images/check.png" width="70px" height="70px" align="middle">
+                <img src="https://javadbayat.github.io/curl/assets/images/info.png" width="70px" height="70px" align="middle">
                 <span>Download completed!</span>
             </div>
             <div style="text-align: right;">
