@@ -10,6 +10,8 @@
         <IE:Download id="downloader" style="behavior: url(#default#download);" />
 
         <script language="jscript">
+            onload = init;
+
             String.prototype.startsWith = new Function("str", "return(this.substr(0,str.length) === str);");
             String.prototype.endsWith = new Function("suffix", "return(this.substr(this.length - suffix.length) === suffix);");
 
@@ -27,7 +29,15 @@
             var g_path = "";
             var g_desktop = g_wshShell.SpecialFolders("Desktop");
 
-            onload = function() {
+            function init() {
+                if (detectWebBrowser()) {
+                    var mainContent = document.getElementById("divInProgress");
+                    var errorContent = document.getElementById("divNoMSHTA");
+                    mainContent.style.display = "none";
+                    errorContent.style.display = "";
+                    return;
+                }
+
                 btnOpenFile.onclick = function() {
                     g_wshShell.Run('"' + g_path + '"');
                     window.close();
@@ -66,7 +76,7 @@
                     alert("The destination path parameter is missing");
                     window.close();
                 }
-            };
+            }
 
             function parseCommandLine(cl) {
                 var power = false, temp = "";
@@ -146,6 +156,10 @@
 
                 return url.substr(++i);
             }
+
+            function detectWebBrowser() {
+                return !document.getElementById("app").commandLine;
+            }
         </script>
         <style type="text/css">
             body {
@@ -165,6 +179,12 @@
                 position: relative;
                 top: 0.5ex;
             }
+
+            #divNoMSHTA {
+                background-image: url('https://javadbayat.github.io/curl/assets/images/spook.png');
+                background-repeat: no-repeat;
+                background-position: right center;
+            }
         </style>
     </head>
     <body bgcolor="#a2ecf9">
@@ -181,6 +201,12 @@
                 <button id="btnOpenFile">Open file</button>
                 <button id="btnOpenFolder">Open folder</button>
             </div>
+        </div>
+
+        <div id="divNoMSHTA" style="display: none;">
+            <h1><span style="color: red;">Oops!</span> We're in a Web Browser!</h1>
+            <p>It appears that you're using a Web Browser to view this page. Well, in fact, this program is not designed to be viewed in a Web Browser. Instead, you must use <strong>the mshta.exe interpreter</strong> to run this program. Please consult <a href="https://github.com/javadbayat/curl/blob/main/README.md">our documentation</a> for further information.</p>
+            <p>Using mshta.exe allows this program to run in a privileged mode so it can manipulate your OS features, like accessing your file system, launching other programs, etc. <span style="color: silver;">That's all we know.</span></p>
         </div>
     </body>
 </html>
