@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bad Environment</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <style type="text/css">
+        body {
+            background-color: #ffffcc;
+        }
+
+        h1 > span {
+            color: red;
+        }
+
+        #errorContent {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+        }
+
+        #errorText {
+            width: 50%;
+        }
+
+        ins {
+            color: #777;
+            text-decoration: none;
+        }
+
+        #errorFigure {
+            width: 180px;
+        }
+    </style>
+</head>
+<body>
+    <h1><span>Oops!</span> We're in a Web Browser!</h1>
+    <div id="errorContent">
+        <div id="errorText">
+            <p>It appears that you're using a Web Browser to view this page. Well, in fact, this program is not designed to be viewed in a Web Browser. Instead, you must use <strong>the mshta.exe interpreter</strong> to run this program. Please consult <a href="https://github.com/javadbayat/curl/blob/main/README.md">our documentation</a> for further information.</p>
+            <p>Using mshta.exe allows this program to run in a privileged mode so it can manipulate your OS features, like accessing your file system, launching other programs, etc. <ins>That's all we know.</ins></p>
+        </div>
+        <img id="errorFigure" src="assets/images/broken.gif">
+    </div>
+</body>
+</html>
