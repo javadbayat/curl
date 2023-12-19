@@ -105,7 +105,7 @@
             }
 
             function downloadFile(url, destPath) {
-                txtURL.value = url;
+                document.all.txtURL.value = url;
 
                 var fileName = fileNameFromURL(url);
                 if (!destPath)
@@ -199,6 +199,10 @@
             #btnDetails:hover {
                 color: red;
                 text-decoration: underline;
+            }
+
+            #additionalInfo input {
+                color: maroon;
             }
         </style>
     </head>
