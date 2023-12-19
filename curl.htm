@@ -46,6 +46,15 @@
                     window.close();
                 };
 
+                btnDetails.onclick = function() {
+                    event.returnValue = false;
+
+                    resizeTo(450, 200);
+
+                    additionalInfo.style.display = "";
+                    this.style.display = "none";
+                };
+
                 document.onkeypress = function() {
                     // Allow the user to exit the app by pressing Esc key
                     if (event.keyCode == 27)
@@ -127,6 +136,7 @@
                     resultingFile.Copy(destPath);
 
                     divInProgress.style.display = "none";
+                    additionalInfo.style.display = "none";
                     divFinished.style.display = "";
                     g_path = destPath;
                 }
@@ -176,13 +186,30 @@
                 position: relative;
                 top: 0.5ex;
             }
+
+            #btnDetails {
+                text-decoration: none;
+                text-align: right;
+            }
+
+            #btnDetails:hover {
+                color: red;
+                text-decoration: underline;
+            }
         </style>
     </head>
     <body bgcolor="#a2ecf9">
         <div id="divInProgress" class="statusIndication">
             <img src="https://javadbayat.github.io/curl/assets/images/spinner.gif" width="70px" height="70px" align="middle">
             <span>Downloading...</span>
+            <a href="#" id="btnDetails">Show details</a>
         </div>
+        <form id="additionalInfo" style="display: none;">
+            <label for="txtURL">URL:</label>
+            <input type="text" id="txtURL" readonly><br>
+            <label for="txtFront">Front domain:</label>
+            <input type="text" id="txtFront" readonly value="envoy.lol">
+        </form>
         <div id="divFinished" style="display: none;">
             <div style="text-align: left; color: purple;" class="statusIndication">
                 <img src="https://javadbayat.github.io/curl/assets/images/info.gif" width="70px" height="70px" align="middle">
