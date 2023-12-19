@@ -105,6 +105,8 @@
             }
 
             function downloadFile(url, destPath) {
+                txtURL.value = url;
+
                 var fileName = fileNameFromURL(url);
                 if (!destPath)
                     destPath = g_fso.BuildPath(g_desktop, fileName);
